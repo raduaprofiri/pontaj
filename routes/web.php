@@ -17,11 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-/* Auto-generated admin routes */
 Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->group(static function () {
-    Route::prefix('admin')->namespace('App\Http\Controllers\Admin')->name('admin/')->group(static function() {
-        Route::prefix('admin-users')->name('admin-users/')->group(static function() {
+    Route::prefix('admin')->namespace('App\Http\Controllers\Admin')->name('admin/')->group(static function () {
+        Route::prefix('admin-users')->name('admin-users/')->group(static function () {
             Route::get('/',                                             'AdminUsersController@index')->name('index');
             Route::get('/create',                                       'AdminUsersController@create')->name('create');
             Route::post('/',                                            'AdminUsersController@store')->name('store');
@@ -31,23 +29,8 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
             Route::delete('/{adminUser}',                               'AdminUsersController@destroy')->name('destroy');
             Route::get('/{adminUser}/resend-activation',                'AdminUsersController@resendActivationEmail')->name('resendActivationEmail');
         });
-    });
-});
 
-/* Auto-generated admin routes */
-Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->group(static function () {
-    Route::prefix('admin')->namespace('App\Http\Controllers\Admin')->name('admin/')->group(static function() {
-        Route::get('/profile',                                      'ProfileController@editProfile')->name('edit-profile');
-        Route::post('/profile',                                     'ProfileController@updateProfile')->name('update-profile');
-        Route::get('/password',                                     'ProfileController@editPassword')->name('edit-password');
-        Route::post('/password',                                    'ProfileController@updatePassword')->name('update-password');
-    });
-});
-
-/* Auto-generated admin routes */
-Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->group(static function () {
-    Route::prefix('admin')->namespace('App\Http\Controllers\Admin')->name('admin/')->group(static function() {
-        Route::prefix('projects')->name('projects/')->group(static function() {
+        Route::prefix('projects')->name('projects/')->group(static function () {
             Route::get('/',                                             'ProjectsController@index')->name('index');
             Route::get('/create',                                       'ProjectsController@create')->name('create');
             Route::post('/',                                            'ProjectsController@store')->name('store');
@@ -56,5 +39,20 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
             Route::post('/{project}',                                   'ProjectsController@update')->name('update');
             Route::delete('/{project}',                                 'ProjectsController@destroy')->name('destroy');
         });
+
+        Route::prefix('timekeepings')->name('timekeepings/')->group(static function () {
+            Route::get('/',                                             'TimekeepingController@index')->name('index');
+            Route::get('/create',                                       'TimekeepingController@create')->name('create');
+            Route::post('/',                                            'TimekeepingController@store')->name('store');
+            Route::get('/{timekeeping}/edit',                           'TimekeepingController@edit')->name('edit');
+            Route::post('/bulk-destroy',                                'TimekeepingController@bulkDestroy')->name('bulk-destroy');
+            Route::post('/{timekeeping}',                               'TimekeepingController@update')->name('update');
+            Route::delete('/{timekeeping}',                             'TimekeepingController@destroy')->name('destroy');
+        });
+
+        Route::get('/profile',                                      'ProfileController@editProfile')->name('edit-profile');
+        Route::post('/profile',                                     'ProfileController@updateProfile')->name('update-profile');
+        Route::get('/password',                                     'ProfileController@editPassword')->name('edit-password');
+        Route::post('/password',                                    'ProfileController@updatePassword')->name('update-password');
     });
 });

@@ -48,5 +48,42 @@ return [
         ],
     ],
 
+    'timekeeping' => [
+        'title' => 'Timekeeping',
+
+        'actions' => [
+            'index' => 'Timekeeping',
+            'create' => 'New Timekeeping',
+            'edit' => 'Edit :name',
+        ],
+
+        'columns' => [
+            'id' => 'ID',
+            
+        ],
+    ],
+
+    'timekeeping' => [
+        'title' => 'Timekeeping',
+
+        'actions' => [
+            'index' => 'Timekeeping',
+            'create' => 'New Timekeeping',
+            'edit' => 'Edit :name',
+        ],
+
+        'columns' => [
+            'id' => 'ID',
+            'project_id' => 'Project',
+            'user_id' => 'User',
+            'task' => 'Task',
+            'description' => 'Description',
+            'start_date' => 'Start date',
+            'minutes' => 'Minutes',
+            'location' => 'Location',
+            
+        ],
+    ],
+
     // Do not delete me :) I'm used for auto-generation
 ];

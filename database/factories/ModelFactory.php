@@ -29,3 +29,24 @@ $factory->define(App\Models\Project::class, static function (Faker\Generator $fa
         
     ];
 });
+/** @var  \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Models\Timekeeping::class, static function (Faker\Generator $faker) {
+    return [
+        
+        
+    ];
+});
+/** @var  \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Models\Timekeeping::class, static function (Faker\Generator $faker) {
+    return [
+        'project_id' => $faker->randomNumber(5),
+        'user_id' => $faker->randomNumber(5),
+        'task' => $faker->text(),
+        'description' => $faker->text(),
+        'start_date' => $faker->dateTime,
+        'minutes' => $faker->randomNumber(5),
+        'location' => $faker->text(),
+        
+        
+    ];
+});

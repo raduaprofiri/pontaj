@@ -19,5 +19,8 @@
         "sass": "^1.32.6",
         "sass-loader": "^8.0.2",
         "vue-loader": "15.9.5"
+    },
+    "dependencies": {
+        "prettier-plugin-blade": "^0.0.5"
     }
 }
