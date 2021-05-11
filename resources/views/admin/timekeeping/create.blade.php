@@ -21,7 +21,7 @@
                 >
                     <div class="card-header">
                         <i class="fa fa-plus"></i>
-                        {{ trans('admin.timekeeping.actions.create') }}
+                        New Timekeeping
                     </div>
 
                     <div class="card-body">
@@ -38,7 +38,7 @@
                                 class="fa"
                                 :class="submiting ? 'fa-spinner' : 'fa-download'"
                             ></i>
-                            {{ trans('brackets/admin-ui::admin.btn.save') }}
+                            Save
                         </button>
                     </div>
                 </form>

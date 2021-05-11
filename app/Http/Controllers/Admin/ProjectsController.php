@@ -73,8 +73,6 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        $this->authorize('admin.project.create');
-
         return view('admin.project.create', [
             'users' => AdminUser::all()
         ]);
@@ -111,9 +109,6 @@ class ProjectsController extends Controller
      */
     public function show(Project $project)
     {
-        $this->authorize('admin.project.show', $project);
-
-        // TODO your code goes here
     }
 
     /**
@@ -125,8 +120,6 @@ class ProjectsController extends Controller
      */
     public function edit(Project $project)
     {
-        $this->authorize('admin.project.edit', $project);
-    
         $project->load('leader');
 
         return view('admin.project.edit', [

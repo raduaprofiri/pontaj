@@ -15,7 +15,7 @@ class StoreTimekeeping extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.timekeeping.create');
+        return true;
     }
 
     /**
@@ -26,15 +26,20 @@ class StoreTimekeeping extends FormRequest
     public function rules(): array
     {
         return [
-            
+            'project_id' => 'required',
+            'task' => 'required',
+            'start_date' => 'required',
+            'description' => 'nullable',
+            'minutes' => 'required',
+            'location' => 'required'
         ];
     }
 
     /**
-    * Modify input data
-    *
-    * @return array
-    */
+     * Modify input data
+     *
+     * @return array
+     */
     public function getSanitized(): array
     {
         $sanitized = $this->validated();

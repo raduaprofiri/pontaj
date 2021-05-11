@@ -14,7 +14,7 @@ class ImpersonalLoginAdminUser extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.admin-user.impersonal-login', $this->adminUser);
+        return true;
     }
 
     /**

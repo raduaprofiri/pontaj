@@ -14,7 +14,7 @@ class IndexProject extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.project.index');
+        return true;
     }
 
     /**

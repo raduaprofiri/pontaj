@@ -14,7 +14,7 @@ class BulkDestroyTimekeeping extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.timekeeping.bulk-delete');
+        return true;
     }
 
     /**

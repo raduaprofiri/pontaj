@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +48,8 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
             Route::get('/{timekeeping}/edit',                           'TimekeepingController@edit')->name('edit');
             Route::post('/bulk-destroy',                                'TimekeepingController@bulkDestroy')->name('bulk-destroy');
             Route::post('/{timekeeping}',                               'TimekeepingController@update')->name('update');
+            Route::put('/{timekeeping}/approve',                        'TimekeepingController@approve');
+            Route::put('/{timekeeping}/reject',                         'TimekeepingController@reject');
             Route::delete('/{timekeeping}',                             'TimekeepingController@destroy')->name('destroy');
         });
 
@@ -54,5 +57,8 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard'), 'admin'])->gro
         Route::post('/profile',                                     'ProfileController@updateProfile')->name('update-profile');
         Route::get('/password',                                     'ProfileController@editPassword')->name('edit-password');
         Route::post('/password',                                    'ProfileController@updatePassword')->name('update-password');
+
+        Route::get('/dashboard-e', [DashboardController::class, 'employee']);
+        Route::get('/dashboard-a', [DashboardController::class, 'admin']);
     });
 });

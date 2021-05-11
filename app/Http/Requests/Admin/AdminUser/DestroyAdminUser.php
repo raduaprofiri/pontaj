@@ -14,7 +14,7 @@ class DestroyAdminUser extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.admin-user.delete', $this->adminUser);
+        return true;
     }
 
     /**

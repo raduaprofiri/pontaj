@@ -80,8 +80,6 @@ class AdminUsersController extends Controller
      */
     public function create()
     {
-        $this->authorize('admin.admin-user.create');
-
         return view('admin.admin-user.create', [
             'activation' => Config::get('admin-auth.activation_enabled'),
             'roles' => Role::where('guard_name', $this->guard)->get(),
@@ -121,9 +119,6 @@ class AdminUsersController extends Controller
      */
     public function show(AdminUser $adminUser)
     {
-        $this->authorize('admin.admin-user.show', $adminUser);
-
-        // TODO your code goes here
     }
 
     /**
@@ -135,8 +130,6 @@ class AdminUsersController extends Controller
      */
     public function edit(AdminUser $adminUser)
     {
-        $this->authorize('admin.admin-user.edit', $adminUser);
-
         $adminUser->load('roles');
 
         return view('admin.admin-user.edit', [

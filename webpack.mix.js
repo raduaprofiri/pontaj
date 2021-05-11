@@ -18,8 +18,10 @@ mix.js('resources/js/app.js', 'public/js')
 
 
 mix
-  .js(["resources/js/admin/admin.js"], "public/js")
-  .sass("resources/sass/admin/admin.scss", "public/css")
+.js(["resources/js/admin/admin.js"], "public/js")
+.js(["resources/js/admin/dashboarde.js"], "public/js")
+.js(["resources/js/admin/dashboarda.js"], "public/js")
+.sass("resources/sass/admin/admin.scss", "public/css")
   .vue();
 
 if (mix.inProduction()) {

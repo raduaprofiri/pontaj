@@ -15,7 +15,7 @@ class UpdateTimekeeping extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.timekeeping.edit', $this->timekeeping);
+        return true;
     }
 
     /**
@@ -26,7 +26,12 @@ class UpdateTimekeeping extends FormRequest
     public function rules(): array
     {
         return [
-            
+            'project_id' => 'required',
+            'task' => 'required',
+            'start_date' => 'required',
+            'description' => 'nullable',
+            'minutes' => 'required',
+            'location' => 'required'
         ];
     }
 

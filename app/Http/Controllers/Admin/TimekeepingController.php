@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\Timekeeping\StoreTimekeeping;
 use App\Http\Requests\Admin\Timekeeping\UpdateTimekeeping;
 use App\Models\Project;
 use App\Models\Timekeeping;
+use App\Models\User;
 use Brackets\AdminAuth\Models\AdminUser;
 use Brackets\AdminListing\Facades\AdminListing;
 use Exception;
@@ -33,17 +34,26 @@ class TimekeepingController extends Controller
      */
     public function index(IndexTimekeeping $request)
     {
+        $is_admin = !auth()->user()->hasRole('Employee');
         // create and AdminListing instance for a specific model and
-        $data = AdminListing::create(Timekeeping::class)->processRequestAndGet(
+        $data = AdminListing::create(Timekeeping::class);
+        
+        if (!$is_admin) {
+            $data->modifyQuery(function ($query) {
+                return $query->where('user_id', auth()->id());
+            });
+        }
+        
+        $data = $data->processRequestAndGet(
             // pass the request with params
             $request,
-
             // set columns to query
-            ['id', 'project_id', 'user_id', 'start_date', 'minutes'],
-
+            ['id', 'project_id', 'user_id', 'start_date', 'minutes', 'status'],
             // set columns to searchIn
             ['id', 'task', 'description', 'location']
         );
+
+      
 
         if ($request->ajax()) {
             if ($request->has('bulk')) {
@@ -54,7 +64,12 @@ class TimekeepingController extends Controller
             return ['data' => $data];
         }
 
-        return view('admin.timekeeping.index', ['data' => $data]);
+        return view('admin.timekeeping.index', [
+            'data' => $data, 
+            'projects' => Project::all(), 
+            'users' => AdminUser::all(),
+            'is_admin' => $is_admin
+        ]);
     }
 
     /**
@@ -65,8 +80,6 @@ class TimekeepingController extends Controller
      */
     public function create()
     {
-        $this->authorize('admin.timekeeping.create');
-
         return view('admin.timekeeping.create', [
             'users' => AdminUser::all(),
             'projects' => Project::all()
@@ -83,6 +96,12 @@ class TimekeepingController extends Controller
     {
         // Sanitize input
         $sanitized = $request->getSanitized();
+
+        $sanitized = array_merge($sanitized, [
+            'project_id' => $sanitized['project_id']['id'],
+            'user_id' => auth()->id(),
+            'status' => 'pending'
+        ]);
 
         // Store the Timekeeping
         $timekeeping = Timekeeping::create($sanitized);
@@ -103,7 +122,6 @@ class TimekeepingController extends Controller
      */
     public function show(Timekeeping $timekeeping)
     {
-        $this->authorize('admin.timekeeping.show', $timekeeping);
     }
 
     /**
@@ -115,11 +133,10 @@ class TimekeepingController extends Controller
      */
     public function edit(Timekeeping $timekeeping)
     {
-        $this->authorize('admin.timekeeping.edit', $timekeeping);
-
-
         return view('admin.timekeeping.edit', [
             'timekeeping' => $timekeeping,
+            'users' => AdminUser::all(),
+            'projects' => Project::all()
         ]);
     }
 
@@ -127,13 +144,21 @@ class TimekeepingController extends Controller
      * Update the specified resource in storage.
      *
      * @param UpdateTimekeeping $request
-     * @param Timekeeping $timekeeping
+     * @param Timekeeping       $timekeeping
      * @return array|RedirectResponse|Redirector
      */
     public function update(UpdateTimekeeping $request, Timekeeping $timekeeping)
     {
         // Sanitize input
         $sanitized = $request->getSanitized();
+
+
+        $sanitized = array_merge($sanitized, [
+            'project_id' => $sanitized['project_id']['id'],
+            'user_id' => auth()->id(),
+            'status' => 'pending'
+        ]);
+
 
         // Update changed values Timekeeping
         $timekeeping->update($sanitized);
@@ -152,7 +177,7 @@ class TimekeepingController extends Controller
      * Remove the specified resource from storage.
      *
      * @param DestroyTimekeeping $request
-     * @param Timekeeping $timekeeping
+     * @param Timekeeping        $timekeeping
      * @throws Exception
      * @return ResponseFactory|RedirectResponse|Response
      */
@@ -187,5 +212,21 @@ class TimekeepingController extends Controller
         });
 
         return response(['message' => trans('brackets/admin-ui::admin.operation.succeeded')]);
+    }
+
+    public function approve(Timekeeping $timekeeping)
+    {
+        $timekeeping->status = 'approved';
+        $timekeeping->save();
+
+        return redirect()->back();
+    }
+
+    public function reject(Timekeeping $timekeeping)
+    {
+        $timekeeping->status = 'rejected';
+        $timekeeping->save();
+
+        return redirect()->back();
     }
 }

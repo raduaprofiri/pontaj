@@ -1,5 +1,6 @@
 import AppListing from '../app-components/Listing/AppListing';
 
 Vue.component('timekeeping-listing', {
-    mixins: [AppListing]
+    mixins: [AppListing],
+    props: ['projects', 'users']
 });

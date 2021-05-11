@@ -14,7 +14,7 @@ class BulkDestroyProject extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.project.bulk-delete');
+        return true;
     }
 
     /**

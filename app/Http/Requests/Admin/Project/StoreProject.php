@@ -15,7 +15,7 @@ class StoreProject extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.project.create');
+        return true;
     }
 
     /**

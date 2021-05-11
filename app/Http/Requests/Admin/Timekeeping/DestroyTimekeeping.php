@@ -14,7 +14,7 @@ class DestroyTimekeeping extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.timekeeping.delete', $this->timekeeping);
+        return true;
     }
 
     /**

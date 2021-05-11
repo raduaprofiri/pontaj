@@ -16,7 +16,7 @@ class Timekeeping extends Model
         'start_date',
         'minutes',
         'location',
-    
+        'status'
     ];
     
     

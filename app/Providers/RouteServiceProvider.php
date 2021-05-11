@@ -35,6 +35,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        url()->forceRootUrl('http://3f425e329c3e.eu.ngrok.io/');
         $this->configureRateLimiting();
 
         $this->routes(function () {

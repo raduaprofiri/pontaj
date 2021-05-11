@@ -14,7 +14,7 @@ class IndexAdminUser extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.admin-user.index');
+        return true;
     }
 
     /**

@@ -9,7 +9,7 @@ import VeeValidate from 'vee-validate';
 import 'flatpickr/dist/flatpickr.css';
 import VueCookie from 'vue-cookie';
 import { Admin } from 'craftable';
-import VModal from 'vue-js-modal'
+import VModal from 'vue-js-modal';
 import Vue from 'vue';
 
 import './app-components/bootstrap';
@@ -18,7 +18,7 @@ import './index';
 import 'craftable/dist/ui';
 
 Vue.component('multiselect', Multiselect);
-Vue.use(VeeValidate, {strict: true});
+Vue.use(VeeValidate, { strict: true });
 Vue.component('datetime', flatPickr);
 Vue.use(VModal, { dialog: true, dynamic: true, injectModalsContainer: true });
 Vue.use(VueQuillEditor);
@@ -26,5 +26,20 @@ Vue.use(Notifications);
 Vue.use(VueCookie);
 
 new Vue({
-    mixins: [Admin],
+	mixins: [Admin],
+	data() {
+		return {
+			user_id: null
+		};
+	},
+	watch: {
+		user_id() {
+			window.app.user_id = this.user_id;
+
+            console.log(this.user_id);
+		}
+	},
+	mounted() {
+		this.user_id = 1;
+	}
 });

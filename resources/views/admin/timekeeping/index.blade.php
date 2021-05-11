@@ -6,6 +6,8 @@
 
     <timekeeping-listing
         :data="{{ $data->toJson() }}"
+        :projects="{{ $projects->toJson() }}"
+        :users="{{ $users->toJson() }}"
         :url="'{{ url('admin/timekeepings') }}'"
         inline-template>
 
@@ -14,7 +16,9 @@
                 <div class="card">
                     <div class="card-header">
                         <i class="fa fa-align-justify"></i> {{ trans('admin.timekeeping.actions.index') }}
-                        <a class="btn btn-primary btn-spinner btn-sm pull-right m-b-0" href="{{ url('admin/timekeepings/create') }}" role="button"><i class="fa fa-plus"></i>&nbsp; {{ trans('admin.timekeeping.actions.create') }}</a>
+                        @if(!$is_admin)
+                            <a class="btn btn-primary btn-spinner btn-sm pull-right m-b-0" href="{{ url('admin/timekeepings/create') }}" role="button"><i class="fa fa-plus"></i>&nbsp; {{ trans('admin.timekeeping.actions.create') }}</a>
+                        @endif
                     </div>
                     <div class="card-body" v-cloak>
                         <div class="card-block">
@@ -54,6 +58,7 @@
                                         <th is='sortable' :column="'user_id'">{{ trans('admin.timekeeping.columns.user_id') }}</th>
                                         <th is='sortable' :column="'start_date'">{{ trans('admin.timekeeping.columns.start_date') }}</th>
                                         <th is='sortable' :column="'minutes'">{{ trans('admin.timekeeping.columns.minutes') }}</th>
+                                        <th>Status</th>
 
                                         <th></th>
                                     </tr>
@@ -77,20 +82,43 @@
                                             </label>
                                         </td>
 
-                                    <td>@{{ item.id }}</td>
-                                        <td>@{{ item.project_id }}</td>
-                                        <td>@{{ item.user_id }}</td>
+                                        <td>@{{ item.id }}</td>
+                                        <td>@{{ projects.find(p => p.id == item.project_id).name }}</td>
+                                        <td>@{{ users.find(u => u.id == item.user_id).full_name }}</td>
                                         <td>@{{ item.start_date | datetime }}</td>
                                         <td>@{{ item.minutes }}</td>
                                         
                                         <td>
+                                            <span class="badge badge-success px-2 py-1 text-white" v-if="item.status == 'approved'">Approved</span>
+                                            <span class="badge badge-danger px-2 py-1 text-white" v-else-if="item.status == 'rejected'">Rejected</span>
+                                            <span class="badge badge-info px-2 py-1 text-white" v-else>Pending</span>
+                                        </td>
+                                        
+                                        <td>
                                             <div class="row no-gutters">
-                                                <div class="col-auto">
-                                                    <a class="btn btn-sm btn-spinner btn-info" :href="item.resource_url + '/edit'" title="{{ trans('brackets/admin-ui::admin.btn.edit') }}" role="button"><i class="fa fa-edit"></i></a>
-                                                </div>
-                                                <form class="col" @submit.prevent="deleteItem(item.resource_url)">
-                                                    <button type="submit" class="btn btn-sm btn-danger" title="{{ trans('brackets/admin-ui::admin.btn.delete') }}"><i class="fa fa-trash-o"></i></button>
-                                                </form>
+                                                @if($is_admin)
+                                                    <form class="col" :action="item.resource_url + '/approve'" method="post" v-if="item.status == 'pending'">
+                                                        @csrf
+                                                        @method('put')
+
+                                                        <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-thumbs-up"></i></button>
+                                                    </form>
+
+                                                    <form class="col" :action="item.resource_url + '/reject'" method="post" v-if="item.status == 'pending'">
+                                                        @csrf
+                                                        @method('put')
+
+                                                        <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-thumbs-down"></i></button>
+                                                    </form>
+                                                @else
+                                                    <div class="col-auto" v-if="item.status == 'pending'">
+                                                        <a class="btn btn-sm btn-spinner btn-info" :href="item.resource_url + '/edit'" title="{{ trans('brackets/admin-ui::admin.btn.edit') }}" role="button"><i class="fa fa-edit"></i></a>
+                                                    </div>
+
+                                                    <form class="col" @submit.prevent="deleteItem(item.resource_url)" v-if="item.status == 'pending'">
+                                                        <button type="submit" class="btn btn-sm btn-danger" title="{{ trans('brackets/admin-ui::admin.btn.delete') }}"><i class="fa fa-trash-o"></i></button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

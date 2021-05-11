@@ -7,7 +7,7 @@
 		class="col-form-label text-md-right"
 		:class="isFormLocalized ? 'col-md-4' : 'col-md-2'"
 	>
-		{{ trans('admin.timekeeping.columns.project_id') }}
+		Project
 	</label>
 
 	<div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-8'">
@@ -33,38 +33,6 @@
 
 <div
 	class="form-group row align-items-center"
-	:class="{'has-danger': errors.has('user_id'), 'has-success': fields.user_id && fields.user_id.valid }"
->
-	<label
-		for="user_id"
-		class="col-form-label text-md-right"
-		:class="isFormLocalized ? 'col-md-4' : 'col-md-2'"
-	>
-		{{ trans('admin.timekeeping.columns.user_id') }}
-	</label>
-
-	<div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-8'">
-		<multiselect
-			v-model="form.user_id"
-			:options="users"
-			:multiple="false"
-			track-by="id"
-			label="full_name"
-			placeholder="Select an user"
-		>
-		</multiselect>
-
-		<div
-			v-if="errors.has('user_id')"
-			class="form-control-feedback form-text"
-			v-cloak
-		>
-			@{{ errors.first('user_id') }}
-		</div>
-	</div>
-</div>
-<div
-	class="form-group row align-items-center"
 	:class="{'has-danger': errors.has('task'), 'has-success': fields.task && fields.task.valid }"
 >
 	<label
@@ -72,7 +40,7 @@
 		class="col-form-label text-md-right"
 		:class="isFormLocalized ? 'col-md-4' : 'col-md-2'"
 	>
-		{{ trans('admin.timekeeping.columns.task') }}
+		Task
 	</label>
 
 	<div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-8'">
@@ -80,7 +48,6 @@
 			<textarea
 				class="form-control"
 				v-model="form.task"
-				v-validate="''"
 				id="task"
 				name="task"
 			></textarea>
@@ -105,14 +72,13 @@
 		class="col-form-label text-md-right"
 		:class="isFormLocalized ? 'col-md-4' : 'col-md-2'"
 	>
-		{{ trans('admin.timekeeping.columns.description') }}
+		Description
 	</label>
 
 	<div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-8'">
 		<div>
 			<wysiwyg
 				v-model="form.description"
-				v-validate="''"
 				id="description"
 				name="description"
 				:config="mediaWysiwygConfig"
@@ -138,7 +104,7 @@
 		class="col-form-label text-md-right"
 		:class="isFormLocalized ? 'col-md-4' : 'col-md-2'"
 	>
-		{{ trans('admin.timekeeping.columns.start_date') }}
+		Start date
 	</label>
 
 	<div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-8'">
@@ -148,12 +114,10 @@
             <datetime
 				v-model="form.start_date"
 				:config="datetimePickerConfig"
-				v-validate="'date_format:yyyy-MM-dd HH:mm:ss'"
 				class="flatpickr"
-				:class="{'form-control-danger': errors.has('start_date'), 'form-control-success': fields.start_date && fields.start_date.valid}"
 				id="start_date"
 				name="start_date"
-				placeholder="{{ trans('brackets/admin-ui::admin.forms.select_date_and_time') }}"
+				placeholder="Select a date time"
 			>
 			</datetime>
 		</div>
@@ -176,20 +140,18 @@
 		for="minutes"
 		class="col-form-label text-md-right"
 		:class="isFormLocalized ? 'col-md-4' : 'col-md-2'"
-		>{{ trans('admin.timekeeping.columns.minutes') }}</label
+		>Minutes</label
 	>
 
 	<div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-8'">
 		<input
 			type="text"
 			v-model="form.minutes"
-			v-validate="'decimal'"
-			@input="validate($event)"
 			class="form-control"
-			:class="{'form-control-danger': errors.has('minutes'), 'form-control-success': fields.minutes && fields.minutes.valid}"
 			id="minutes"
 			name="minutes"
-			placeholder="{{ trans('admin.timekeeping.columns.minutes') }}"
+			placeholder="Minutes"
+			v-validate="'decimal'"
 		/>
 
 		<div
@@ -211,7 +173,7 @@
 		class="col-form-label text-md-right"
 		:class="isFormLocalized ? 'col-md-4' : 'col-md-2'"
 	>
-		{{ trans('admin.timekeeping.columns.location') }}
+		Location
 	</label>
 
 	<div :class="isFormLocalized ? 'col-md-4' : 'col-md-9 col-xl-8'">
@@ -219,7 +181,7 @@
             <select class="form-control" v-model="form.location" id="location" name="location">
                 <option :value="null">Select a location</option>
                 <option value="work">Working place</option>
-                <option value="remote">Remote</option>
+                <option value="home">Remote</option>
                 <option value="client">Client</option>
             </select>
 		</div>

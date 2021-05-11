@@ -17,7 +17,7 @@ class StoreAdminUser extends FormRequest
      */
     public function authorize()
     {
-        return Gate::allows('admin.admin-user.create');
+        return true;
     }
 
     /**

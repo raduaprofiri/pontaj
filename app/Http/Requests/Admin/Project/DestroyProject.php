@@ -14,7 +14,7 @@ class DestroyProject extends FormRequest
      */
     public function authorize(): bool
     {
-        return Gate::allows('admin.project.delete', $this->project);
+        return true;
     }
 
     /**
